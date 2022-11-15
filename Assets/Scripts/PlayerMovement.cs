@@ -6,7 +6,6 @@ using UnityEngine.Tilemaps;
 public class PlayerMovement : MonoBehaviour
 {
     public GameObject tilemapObj;
-    public Sprite changeTileSprite;
 
     private Rigidbody2D rb;
 
@@ -23,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
         float x = 0f;
         float y = 0f;
 
-        if(!(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) )) {
+        if(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)) {
             x = Input.GetAxis("Horizontal");
             y = Input.GetAxis("Vertical");
         }
@@ -38,22 +37,29 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator Blast()
     {
-        blastOn = true;
-        yield return null;
+        Vector3 colliderPosition = transform.position + new Vector3(0,-transform.localScale.y,0);
 
-        GridLayout grid = tilemapObj.GetComponentInParent<GridLayout>();
-        Vector3Int gridPosition = grid.WorldToCell(transform.position + new Vector3(0,-transform.localScale.y,0));
+        if(tilemapObj != null) {
+            blastOn = true;
+            yield return null;
 
-        // Debug.Log("Blast at "+ gridPosition);
+            GridLayout grid = tilemapObj.GetComponentInParent<GridLayout>();
+            Vector3Int gridPosition = grid.WorldToCell(colliderPosition);
 
-        Tilemap tilemap = tilemapObj.GetComponent<Tilemap>();
-        // TileBase tile = tilemap.GetTile(gridPosition);
-        
-        ChangeTileColor(tilemap, gridPosition, Color.red);
-        yield return new WaitForSeconds(0.5f);
-        //ChangeTileColor(tilemap, gridPosition, Color.white);
+            // Debug.Log("Blast at "+ gridPosition);
 
-        blastOn = false;
+            Tilemap tilemap = tilemapObj.GetComponent<Tilemap>();
+            // TileBase tile = tilemap.GetTile(gridPosition);
+
+            RealmManager realmManager = tilemapObj.GetComponent<RealmManager>();
+            realmManager.Hit();
+            
+            ChangeTileColor(tilemap, gridPosition, realmManager.realmColor);
+            yield return new WaitForSeconds(0.5f);
+            ChangeTileColor(tilemap, gridPosition, Color.white);
+
+            blastOn = false;
+        }
     }
 
     private void ChangeTileColor(Tilemap tilemap, Vector3Int position, Color color) {
@@ -69,6 +75,35 @@ public class PlayerMovement : MonoBehaviour
                 tilemap.SetColor(ipos, color);
             }
         }
+    }
+
+    /*private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if(collider.gameObject.layer == LayerMask.NameToLayer("Realm") && collider.gameObject != tilemapObj)
+        {
+            tilemapObj = collider.gameObject;
+            Debug.Log("Entering new realm -- "+tilemapObj.name);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        if(collider.gameObject.layer == LayerMask.NameToLayer("Realm"))
+        {
+            tilemapObj = null;
+            Debug.Log("Exiting realm -- "+collider.gameObject.name);
+        }
+    }*/
+
+    public void SetNewRealm(GameObject tilemapObject) {
+        this.tilemapObj = tilemapObject;
+        Debug.Log("Entering new realm -- "+tilemapObj.name);
+    }
+
+    public void ResetRealm(GameObject tilemapObject) {
+        if(this.tilemapObj == tilemapObject)
+            this.tilemapObj = null;
         
+        Debug.Log("Exiting realm -- "+tilemapObject.name);
     }
 }
