@@ -11291,7 +11291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c52ce19c0327de41af8ac1019b9b72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemapObj: {fileID: 0}
+  realm: {fileID: 0}
 --- !u!50 &615541028
 Rigidbody2D:
   serializedVersion: 4
@@ -11380,6 +11380,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7115248191425702781, guid: c97b1e9357ba21244abb14830f856ffc, type: 3}
+      propertyPath: realm
+      value: 
+      objectReference: {fileID: 576961643}
     - target: {fileID: 7115248191425702782, guid: c97b1e9357ba21244abb14830f856ffc, type: 3}
       propertyPath: m_Name
       value: Soul

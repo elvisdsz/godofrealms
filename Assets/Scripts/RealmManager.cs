@@ -9,6 +9,7 @@ public class RealmManager : MonoBehaviour
     public int maxHits = 10;
     private int currentHits = 0;
     private Tilemap tilemap;
+    private bool blastOn = false;
 
     // Start is called before the first frame update
     void Start()
@@ -22,8 +23,17 @@ public class RealmManager : MonoBehaviour
         
     }
 
-    public void Hit()
+    public void Hit(Vector3 origin)
     {
+        if(blastOn)    // test: remove once triggered per soul
+            return;
+
+        GridLayout grid = GetComponentInParent<GridLayout>();
+        Vector3Int gridPosition = grid.WorldToCell(origin);
+
+        // Debug.Log("Blast at "+ gridPosition);
+        StartCoroutine(Blast(gridPosition));
+
         if(currentHits >= maxHits)
             return;
         
@@ -36,7 +46,7 @@ public class RealmManager : MonoBehaviour
         if(collider.gameObject.tag == "Player")
         {
             PlayerMovement player = collider.gameObject.GetComponent<PlayerMovement>();
-            player.SetNewRealm(gameObject);
+            player.SetNewRealm(this);
         }
     }
 
@@ -45,7 +55,40 @@ public class RealmManager : MonoBehaviour
         if(collider.gameObject.tag == "Player")
         {
             PlayerMovement player = collider.gameObject.GetComponent<PlayerMovement>();
-            player.ResetRealm(gameObject);
+            player.ResetRealm(this);
         }
     }
+
+    public bool IsPositionOnTilemap(Vector2 position)
+    {
+        GridLayout grid = GetComponentInParent<GridLayout>();
+        Vector3Int gridPosition = grid.WorldToCell(position);
+
+        return tilemap.HasTile(gridPosition);
+    }
+
+    IEnumerator Blast(Vector3Int gridPosition)
+    {
+        blastOn = true;
+        ChangeTileColor(tilemap, gridPosition, this.realmColor);
+        yield return new WaitForSeconds(0.5f);
+        ChangeTileColor(tilemap, gridPosition, Color.white);
+        blastOn = false;
+    }
+
+    private void ChangeTileColor(Tilemap tilemap, Vector3Int position, Color color) {
+        Vector3Int[] positionArr = {position, position+Vector3Int.up, position+Vector3Int.down, position+Vector3Int.right, position+Vector3Int.left,
+            position+Vector3Int.up+Vector3Int.up+Vector3Int.right+Vector3Int.right, position+Vector3Int.up+Vector3Int.up+Vector3Int.left+Vector3Int.left,
+            position+Vector3Int.down+Vector3Int.down+Vector3Int.right+Vector3Int.right, position+Vector3Int.down+Vector3Int.down+Vector3Int.left+Vector3Int.left,
+        };
+
+        for(int i=0; i<positionArr.Length; i++) {
+            Vector3Int ipos = positionArr[i];
+            if(tilemap.HasTile(position)) {
+                tilemap.SetTileFlags(ipos, TileFlags.None);
+                tilemap.SetColor(ipos, color);
+            }
+        }
+    }
+
 }

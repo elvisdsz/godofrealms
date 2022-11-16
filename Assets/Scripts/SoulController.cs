@@ -7,29 +7,33 @@ public class SoulController : MonoBehaviour
 {
     public TextMeshProUGUI wordTextUI;
 
-    private string word;
+    private string word = "WORD";
     private string remainingWord;
     private float timeSinceSpawn;
-    private RealmManager realm;
+    [SerializeField] private RealmManager realm;
     private float timeSinceOverlap;
-    private bool inCircleFlag;
+    private bool inCircleFlag=false;
+    private float wanderSpeed = 1.2f;
 
     private float timeToHideText = 1f;
+
+    private Rigidbody2D soulRigidbody;
 
     // Start is called before the first frame update
     void Start()
     {
-        SetWord("PEACE"); // test-only
-        Init();
+        soulRigidbody = GetComponent<Rigidbody2D>();
+        Init("PEACE"); // test-only
     }
 
-    void Init()
+    void Init(string word)
     {
         timeSinceSpawn = 0f;
         word = word.ToLower();
         remainingWord = word;
         timeSinceOverlap = 10f;
         inCircleFlag = false;
+        SetRandomVelocity();
     }
 
     // Update is called once per frame
@@ -44,7 +48,32 @@ public class SoulController : MonoBehaviour
         
         RefreshUI();
 
+        Wander(); // soul movement
+
         // TODO: soul stays in the same realm
+    }
+
+    private void Wander()
+    {
+        Vector2 forwardPosition = (Vector2)transform.position + (soulRigidbody.velocity);
+
+        for(int i=1; i<10; i++) {
+            if(realm.IsPositionOnTilemap(forwardPosition))
+                break;
+
+            SetRandomVelocity();
+
+            Debug.DrawRay(transform.position, soulRigidbody.velocity/2f, Color.green, 2f);
+            forwardPosition = (Vector2)transform.position + (soulRigidbody.velocity/2f);
+        }
+    
+    }
+
+    private void SetRandomVelocity()
+    {
+        float velocityX = Random.Range(-1f, 1f);
+        float velocityY = Random.Range(-1f, 1f);
+        soulRigidbody.velocity = new Vector2(velocityX, velocityY).normalized * wanderSpeed;
     }
 
     public void EnterLetter(string letter)
