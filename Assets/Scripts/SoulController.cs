@@ -23,16 +23,17 @@ public class SoulController : MonoBehaviour
     void Start()
     {
         soulRigidbody = GetComponent<Rigidbody2D>();
-        Init("PEACE"); // test-only
+        Init("PEACE", realm); // test-only
     }
 
-    void Init(string word)
+    void Init(string word, RealmManager realm)
     {
         timeSinceSpawn = 0f;
         word = word.ToLower();
         remainingWord = word;
         timeSinceOverlap = 10f;
         inCircleFlag = false;
+        this.realm = realm;
         SetRandomVelocity();
     }
 
