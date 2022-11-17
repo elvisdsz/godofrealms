@@ -18,9 +18,11 @@ public class SoulSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        string pickedWord = WordBank.PickWord(realmManager, 1);
+
         if(spawnPoints.Length>0 && Input.GetKeyDown(KeyCode.RightControl)) {
             Vector3 spawnPosition = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
-            SoulController soulController = SpawnSoul(spawnPosition, "Test");
+            SoulController soulController = SpawnSoul(spawnPosition, pickedWord);
         }
     }
 
