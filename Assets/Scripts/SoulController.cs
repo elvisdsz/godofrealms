@@ -45,7 +45,11 @@ public class SoulController : MonoBehaviour
         if(inCircleFlag) {
             timeSinceOverlap += Time.deltaTime;
             if(timeSinceOverlap >= timeToHideText)
+            {
                 inCircleFlag=false;
+                // Reset remaining word after leaving circle
+                remainingWord = word;
+            }
         }
         
         RefreshUI();
