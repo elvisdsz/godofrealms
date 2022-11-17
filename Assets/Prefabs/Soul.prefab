@@ -248,6 +248,7 @@ GameObject:
   - component: {fileID: 7115248191425702783}
   - component: {fileID: 7115248191425702781}
   - component: {fileID: 7115248191425702778}
+  - component: {fileID: 3042071866503014125}
   m_Layer: 7
   m_Name: Soul
   m_TagString: Untagged
@@ -336,7 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wordTextUI: {fileID: 9141654047152665871}
-  timeSinceOverlap: 0
+  realm: {fileID: 0}
 --- !u!50 &7115248191425702778
 Rigidbody2D:
   serializedVersion: 4
@@ -358,3 +359,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!58 &3042071866503014125
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7115248191425702782}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.49999997

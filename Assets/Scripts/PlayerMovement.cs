@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
 
         playerRigidbody.AddForce(new Vector2(x,y));
 
-        if(realm!=null && Input.GetKey(KeyCode.Space))
+        if(realm!=null && Input.GetKeyDown(KeyCode.Space))
         {
             Vector3 colliderPosition = transform.position + new Vector3(0,-transform.localScale.y,0);
             realm.Hit(colliderPosition);

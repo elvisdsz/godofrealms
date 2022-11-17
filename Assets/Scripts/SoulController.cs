@@ -26,7 +26,7 @@ public class SoulController : MonoBehaviour
         Init("PEACE", realm); // test-only
     }
 
-    void Init(string word, RealmManager realm)
+    public void Init(string word, RealmManager realm)
     {
         timeSinceSpawn = 0f;
         word = word.ToLower();
@@ -34,6 +34,7 @@ public class SoulController : MonoBehaviour
         timeSinceOverlap = 10f;
         inCircleFlag = false;
         this.realm = realm;
+        soulRigidbody = GetComponent<Rigidbody2D>();    //Redundant but required
         SetRandomVelocity();
     }
 
@@ -50,6 +51,11 @@ public class SoulController : MonoBehaviour
         RefreshUI();
 
         Wander(); // soul movement
+
+        if(inCircleFlag)
+        {
+            CheckKeyPressed();
+        }
 
         // TODO: soul stays in the same realm
     }
@@ -68,6 +74,18 @@ public class SoulController : MonoBehaviour
             forwardPosition = (Vector2)transform.position + (soulRigidbody.velocity/2f);
         }
     
+    }
+
+    private void CheckKeyPressed()
+    {
+        if(Input.anyKeyDown)
+        {
+            // Use string for easy conversion to lowercase
+            string keyPressed = Input.inputString;
+            // Only take input string that only has one letter
+            if(keyPressed.Length == 1)
+                EnterLetter(keyPressed);
+        }
     }
 
     private void SetRandomVelocity()
