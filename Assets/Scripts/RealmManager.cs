@@ -6,10 +6,13 @@ using UnityEngine.Tilemaps;
 public class RealmManager : MonoBehaviour
 {
     public Color realmColor;
-    public int maxHits = 10;
-    private int currentHits = 0;
+    public int maxSoulCount = 10;
+    private int releasedSoulCount = 0;
+
     private Tilemap tilemap;
     private bool blastOn = false;
+
+    private List<SoulController> soulList = new List<SoulController>();
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +26,7 @@ public class RealmManager : MonoBehaviour
         
     }
 
-    public void Hit(Vector3 origin)
+    private void Hit(Vector3 origin)
     {
         if(blastOn)    // test: remove once triggered per soul
             return;
@@ -34,11 +37,40 @@ public class RealmManager : MonoBehaviour
         // Debug.Log("Blast at "+ gridPosition);
         StartCoroutine(Blast(gridPosition));
 
-        if(currentHits >= maxHits)
-            return;
-        
-        currentHits+=1;
-        tilemap.color = Color.Lerp(Color.white, realmColor, (float)currentHits/maxHits);
+        /*if(currentSoulCount >= maxSoulCount)
+            return;*/
+            
+        tilemap.color = Color.Lerp(Color.white, realmColor, GetReleasedSoulFraction());
+    }
+
+    public float GetReleasedSoulFraction()
+    {
+        return (float)releasedSoulCount/maxSoulCount;
+    }
+
+    public float GetSoulFraction()
+    {
+        return (float)soulList.Count/maxSoulCount;
+    }
+
+    public bool AddSoulToRealm(SoulController soul)
+    {
+        if(soulList.Count+1 > maxSoulCount)
+            return false;
+            
+        soulList.Add(soul);
+        return true;
+    }
+
+    public bool RemoveSoulFromRealm(SoulController soul, Vector3 origin)
+    {
+        Hit(origin);
+        GameObject.Destroy(soul.gameObject);
+        if(!soulList.Contains(soul))
+            return false;
+
+        releasedSoulCount += 1;
+        return soulList.Remove(soul);
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

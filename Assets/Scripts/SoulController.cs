@@ -19,6 +19,8 @@ public class SoulController : MonoBehaviour
 
     private Rigidbody2D soulRigidbody;
 
+    private bool released = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +43,9 @@ public class SoulController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(released)
+            return;
+            
         timeSinceSpawn += Time.deltaTime;
         if(inCircleFlag) {
             timeSinceOverlap += Time.deltaTime;
@@ -101,6 +106,13 @@ public class SoulController : MonoBehaviour
 
     public void EnterLetter(string letter)
     {
+        if(remainingWord.Length == 0)
+        {
+            if(!released)
+                ReleaseSoul();
+            return;
+        }
+
         if(remainingWord[0] == letter.ToLower()[0])
         {
             remainingWord = remainingWord.Remove(0, 1);
@@ -129,7 +141,9 @@ public class SoulController : MonoBehaviour
 
     private void ReleaseSoul()
     {
-        // TODO
+        released = true;
+        soulRigidbody.velocity = Vector2.zero;
+        realm.RemoveSoulFromRealm(this, transform.position); // FIXME - player position?
     }
 
 }

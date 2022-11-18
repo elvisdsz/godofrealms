@@ -9,6 +9,9 @@ public class SoulSpawner : MonoBehaviour
 
     private RealmManager realmManager;
 
+    private float spawnTimeInterval=5f;
+    private float timeSinceLastSpawn=0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,10 +21,16 @@ public class SoulSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(spawnPoints.Length>0 && Input.GetKeyDown(KeyCode.RightControl)) {
-            string pickedWord = WordBank.PickWord(realmManager, 1);
-            Vector3 spawnPosition = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
-            SoulController soulController = SpawnSoul(spawnPosition, pickedWord);
+        if(spawnPoints.Length>0 && realmManager.GetSoulFraction()<1)
+        {
+            timeSinceLastSpawn += Time.deltaTime;
+            if(timeSinceLastSpawn >= spawnTimeInterval || realmManager.GetSoulFraction()==0f) {
+                string pickedWord = WordBank.PickWord(realmManager, 1);
+                Vector3 spawnPosition = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
+                SoulController soulController = SpawnSoul(spawnPosition, pickedWord);
+                if(soulController != null)
+                    timeSinceLastSpawn = 0f;
+            }
         }
     }
 
@@ -36,6 +45,12 @@ public class SoulSpawner : MonoBehaviour
         soul.transform.position = position;
         SoulController soulController = soul.GetComponent<SoulController>();
         soulController.Init(word, realmManager);
-        return soulController;
+
+        if(realmManager.AddSoulToRealm(soulController))
+            return soulController;
+        else {
+            GameObject.Destroy(soul);
+            return null;
+        }
     }
 }

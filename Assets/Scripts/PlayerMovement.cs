@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public RealmManager realm;
 
     private Rigidbody2D playerRigidbody;
+    private float speed = 3f;
 
     // Start is called before the first frame update
     void Start()
@@ -26,13 +27,13 @@ public class PlayerMovement : MonoBehaviour
             y = Input.GetAxis("Vertical");
         }
 
-        playerRigidbody.AddForce(new Vector2(x,y));
+        playerRigidbody.AddForce(new Vector2(x,y) * speed);
 
-        if(realm!=null && Input.GetKeyDown(KeyCode.Space))
+        /*if(realm!=null && Input.GetKeyDown(KeyCode.Space))
         {
             Vector3 colliderPosition = transform.position + new Vector3(0,-transform.localScale.y,0);
             realm.Hit(colliderPosition);
-        }
+        }*/
     }
 
     public void SetNewRealm(RealmManager realm) {
