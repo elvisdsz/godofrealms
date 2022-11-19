@@ -71,7 +71,7 @@ public class SoulController : MonoBehaviour
 
     private void Wander()
     {
-        Vector2 forwardPosition = (Vector2)transform.position + (soulRigidbody.velocity);
+        Vector2 forwardPosition = (Vector2)transform.position + (soulRigidbody.velocity/2f);
 
         for(int i=1; i<10; i++) {
             if(realm.IsPositionOnTilemap(forwardPosition))
@@ -143,7 +143,7 @@ public class SoulController : MonoBehaviour
     {
         released = true;
         soulRigidbody.velocity = Vector2.zero;
-        realm.RemoveSoulFromRealm(this, transform.position); // FIXME - player position?
+        realm.RemoveSoulFromRealm(this, transform.position);
     }
 
 }

@@ -11,7 +11,6 @@ public class RealmManager : MonoBehaviour
     private int releasedSoulCount = 0;
 
     private Tilemap tilemap;
-    private bool blastOn = false;
 
     private List<SoulController> soulList = new List<SoulController>();
 
@@ -30,17 +29,11 @@ public class RealmManager : MonoBehaviour
 
     private void Hit(Vector3 origin)
     {
-        if(blastOn)    // test: remove once triggered per soul
-            return;
-
         GridLayout grid = GetComponentInParent<GridLayout>();
         Vector3Int gridPosition = grid.WorldToCell(origin);
 
         // Debug.Log("Blast at "+ gridPosition);
         StartCoroutine(Blast(gridPosition));
-
-        /*if(currentSoulCount >= maxSoulCount)
-            return;*/
             
         tilemap.color = Color.Lerp(Color.white, realmColor, GetReleasedSoulFraction());
     }
@@ -109,8 +102,6 @@ public class RealmManager : MonoBehaviour
 
     IEnumerator Blast(Vector3Int position)
     {
-        blastOn = true;
-
         Vector3Int[] pattern1 = {position, position+Vector3Int.up, position+Vector3Int.down, position+Vector3Int.right, position+Vector3Int.left,
             position+Vector3Int.up+Vector3Int.right, position+Vector3Int.up+Vector3Int.left,
             position+Vector3Int.down+Vector3Int.right, position+Vector3Int.down+Vector3Int.left,
@@ -141,7 +132,6 @@ public class RealmManager : MonoBehaviour
         ChangeTileColor(tilemap, position, pattern3, this.realmColor);
         yield return new WaitForSeconds(0.2f);
         ChangeTileColor(tilemap, position, pattern3, Color.white);
-        blastOn = false;
     }
 
     private void ChangeTileColor(Tilemap tilemap, Vector3Int position, Vector3Int[] pattern, Color color) {
