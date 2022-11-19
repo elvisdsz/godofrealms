@@ -55,6 +55,11 @@ public class RealmManager : MonoBehaviour
         return (float)soulList.Count/maxSoulCount;
     }
 
+    public int GetSoulCount()
+    {
+        return soulList.Count;
+    }
+
     public bool AddSoulToRealm(SoulController soul)
     {
         if(soulList.Count+1 > maxSoulCount)

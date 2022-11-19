@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SoulSpawner : MonoBehaviour
 {
+    private GameManagerScript gameManager;
     public GameObject soulPrefab;
     public Transform[] spawnPoints;
 
@@ -15,13 +16,18 @@ public class SoulSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameManagerScript._instance;
         realmManager = GetComponent<RealmManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(spawnPoints.Length>0 && realmManager.GetSoulFraction()<1 && realmManager.GetReleasedSoulFraction()<1)
+        // Skip soul spawning if player hasn't demonstrated release soul mechanic
+        if(spawnPoints.Length<0 || (gameManager.GetTotalSoulsReleased()<1 && realmManager.GetSoulCount()>2))
+            return;
+
+        if(realmManager.GetSoulFraction()<1 && realmManager.GetReleasedSoulFraction()<1)
         {
             timeSinceLastSpawn += Time.deltaTime;
             if(timeSinceLastSpawn >= spawnTimeInterval || realmManager.GetSoulFraction()==0f) {

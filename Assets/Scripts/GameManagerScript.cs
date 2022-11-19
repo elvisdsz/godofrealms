@@ -35,7 +35,7 @@ public class GameManagerScript : MonoBehaviour
     void Update()
     {
         // if player in realm and realm has at least one soul
-        if(player.GetRealm() != null && player.GetRealm().GetSoulFraction()>0)
+        if(player.GetRealm() != null && player.GetRealm().GetSoulCount()>0)
             timeSinceLastSoulRelease += Time.deltaTime;
     }
 
