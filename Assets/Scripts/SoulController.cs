@@ -6,8 +6,9 @@ using TMPro;
 public class SoulController : MonoBehaviour
 {
     public TextMeshProUGUI wordTextUI;
+    public WordBank WordBank;
 
-    private string word = "WORD";
+    private string word;
     private string remainingWord;
     private float timeSinceSpawn;
     [SerializeField] private RealmManager realm;
@@ -25,13 +26,14 @@ public class SoulController : MonoBehaviour
     void Start()
     {
         soulRigidbody = GetComponent<Rigidbody2D>();
-        Init("PEACE", realm); // test-only
+        //Init("PEACE", realm); // test-only
     }
 
     public void Init(string word, RealmManager realm)
     {
-        timeSinceSpawn = 0f;
         word = word.ToLower();
+        this.word = word;
+        timeSinceSpawn = 0f;
         remainingWord = word;
         timeSinceOverlap = 10f;
         inCircleFlag = false;
@@ -128,10 +130,10 @@ public class SoulController : MonoBehaviour
         inCircleFlag = true;
     }
 
-    public void SetWord(string word)
+    /*public void SetWord(string word)
     {
         this.word = word;
-    }
+    }*/
 
     public void RefreshUI()
     {

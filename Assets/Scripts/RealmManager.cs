@@ -8,12 +8,17 @@ public class RealmManager : MonoBehaviour
     private GameManagerScript gameManager;
     public Color realmColor;
     public int maxSoulCount = 10;
+    public enum Realm
+    {
+        FIRE,
+        WATER
+    }
+    public Realm currentRealm;
     private int releasedSoulCount = 0;
 
     private Tilemap tilemap;
 
     private List<SoulController> soulList = new List<SoulController>();
-
     // Start is called before the first frame update
     void Start()
     {
