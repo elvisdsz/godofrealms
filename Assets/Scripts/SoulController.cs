@@ -3,20 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class SoulController : MonoBehaviour
+public class SoulController : Typer
 {
-    public TextMeshProUGUI wordTextUI;
-    public WordBank WordBank;
-
-    private string word;
-    private string remainingWord;
     private float timeSinceSpawn;
     [SerializeField] private RealmManager realm;
-    private float timeSinceOverlap;
-    private bool inCircleFlag=false;
     private float wanderSpeed = 1.2f;
-
-    private float timeToHideText = 1f;
 
     private Rigidbody2D soulRigidbody;
 
@@ -31,15 +22,11 @@ public class SoulController : MonoBehaviour
 
     public void Init(string word, RealmManager realm)
     {
-        word = word.ToLower();
-        this.word = word;
         timeSinceSpawn = 0f;
-        remainingWord = word;
-        timeSinceOverlap = 10f;
-        inCircleFlag = false;
         this.realm = realm;
         soulRigidbody = GetComponent<Rigidbody2D>();    //Redundant but required
         SetRandomVelocity();
+        base.Init(word);
     }
 
     // Update is called once per frame
@@ -47,27 +34,13 @@ public class SoulController : MonoBehaviour
     {
         if(released)
             return;
-            
+
         timeSinceSpawn += Time.deltaTime;
-        if(inCircleFlag) {
-            timeSinceOverlap += Time.deltaTime;
-            if(timeSinceOverlap >= timeToHideText)
-            {
-                inCircleFlag=false;
-                // Reset remaining word after leaving circle
-                remainingWord = word;
-            }
-        }
-        
-        RefreshUI();
 
         Wander(); // soul movement
 
-        if(inCircleFlag)
-        {
-            CheckKeyPressed();
-        }
-
+        TyperUpdate();
+        
         // TODO: soul stays in the same realm
     }
 
@@ -87,18 +60,6 @@ public class SoulController : MonoBehaviour
     
     }
 
-    private void CheckKeyPressed()
-    {
-        if(Input.anyKeyDown)
-        {
-            // Use string for easy conversion to lowercase
-            string keyPressed = Input.inputString;
-            // Only take input string that only has one letter
-            if(keyPressed.Length == 1)
-                EnterLetter(keyPressed);
-        }
-    }
-
     private void SetRandomVelocity()
     {
         float velocityX = Random.Range(-1f, 1f);
@@ -106,40 +67,10 @@ public class SoulController : MonoBehaviour
         soulRigidbody.velocity = new Vector2(velocityX, velocityY).normalized * wanderSpeed;
     }
 
-    public void EnterLetter(string letter)
-    {
-        if(remainingWord.Length == 0)
-        {
-            if(!released)
-                ReleaseSoul();
-            return;
-        }
-
-        if(remainingWord[0] == letter.ToLower()[0])
-        {
-            remainingWord = remainingWord.Remove(0, 1);
-            RefreshUI();
-            if(remainingWord.Length == 0)
-                ReleaseSoul();
-        }
-    }
-
-    public void InCircle()
-    {
-        timeSinceOverlap = 0f;
-        inCircleFlag = true;
-    }
-
     /*public void SetWord(string word)
     {
         this.word = word;
     }*/
-
-    public void RefreshUI()
-    {
-        wordTextUI.text = remainingWord;
-        wordTextUI.enabled = inCircleFlag;
-    }
 
     private void ReleaseSoul()
     {
@@ -148,4 +79,8 @@ public class SoulController : MonoBehaviour
         realm.RemoveSoulFromRealm(this, transform.position);
     }
 
+    public override void WordCompleted()
+    {
+        ReleaseSoul();
+    }
 }

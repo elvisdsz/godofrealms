@@ -5,6 +5,7 @@ using UnityEngine;
 public class SoulOverlap : MonoBehaviour
 {
     public float range = 1.0f;
+    public LayerMask layers;
     private Rigidbody2D playerRigidBody;
 
     private void Awake()
@@ -15,7 +16,7 @@ public class SoulOverlap : MonoBehaviour
     void Update()
     {
         // add layer to different objects
-        Collider2D[] colliderArray = Physics2D.OverlapCircleAll(transform.position, range, LayerMask.GetMask ("Soul"));
+        Collider2D[] colliderArray = Physics2D.OverlapCircleAll(transform.position, range, layers);
         foreach (Collider2D collider in colliderArray)
         {
             SoulController soul = collider.GetComponent<SoulController>();
