@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public RealmManager realm;
+    private RealmManager realm;
 
     private Rigidbody2D playerRigidbody;
     private float speed = 3f;
@@ -47,4 +47,10 @@ public class PlayerMovement : MonoBehaviour
         
         Debug.Log("Exiting realm -- "+realm.name);
     }
+
+    public RealmManager GetRealm()
+    {
+        return this.realm;
+    }
+    
 }

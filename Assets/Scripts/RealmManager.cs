@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class RealmManager : MonoBehaviour
 {
+    private GameManagerScript gameManager;
     public Color realmColor;
     public int maxSoulCount = 10;
     private int releasedSoulCount = 0;
@@ -17,6 +18,7 @@ public class RealmManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameManagerScript._instance;
         tilemap = GetComponent<Tilemap>();
     }
 
@@ -70,6 +72,7 @@ public class RealmManager : MonoBehaviour
             return false;
 
         releasedSoulCount += 1;
+        gameManager.SoulReleased();
         return soulList.Remove(soul);
     }
 
