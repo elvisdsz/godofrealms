@@ -38,11 +38,16 @@ public class GameManagerScript : MonoBehaviour
     {
         if(player.GetRealm() != null)
         {
-            gameIndicators.UpdateRealmControlMeter(player.GetRealm().GetReleasedSoulFraction());
+            gameIndicators.UpdateRealmControlMeter(player.GetRealm().GetRealmControlFraction());
 
             // if player in realm and realm has at least one soul
             if(player.GetRealm().GetSoulCount()>0)
                 timeSinceLastSoulRelease += Time.deltaTime;
+
+            if(Input.GetKeyDown(KeyCode.RightControl))
+            {
+                player.GetRealm().TriggerChaosWave(0.5f);
+            }
         }
     }
 
@@ -69,6 +74,8 @@ public class GameManagerScript : MonoBehaviour
     {
         player.SetNewRealm(realm);
         gameIndicators.ShowRealmControlMeter(realm.realmColor, realm.GetReleasedSoulFraction());
+        if(realm.chaosWavesCompleted <= 0)
+            realm.TriggerChaosWave(1f);
     }
 
     public void ResetPlayerRealm(RealmManager realm)

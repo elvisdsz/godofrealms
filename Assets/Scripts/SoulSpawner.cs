@@ -23,11 +23,15 @@ public class SoulSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Chaos wave needs to be triggered via the realm manager
+        if(!realmManager.chaosWaveOn)
+            return;
+
         // Skip soul spawning if player hasn't demonstrated release soul mechanic
         if(spawnPoints.Length<0 || (gameManager.GetTotalSoulsReleased()<1 && realmManager.GetSoulCount()>2))
             return;
 
-        if(realmManager.GetSoulFraction()<1 && realmManager.GetReleasedSoulFraction()<1)
+        if(realmManager.SpawnMoreSouls())
         {
             timeSinceLastSpawn += Time.deltaTime;
             if(timeSinceLastSpawn >= spawnTimeInterval || realmManager.GetSoulFraction()==0f) {

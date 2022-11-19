@@ -44,6 +44,12 @@ public class SoulController : Typer
 
     private void Wander()
     {
+        if(soulRigidbody.velocity == Vector2.zero)
+        {
+            SetRandomVelocity();
+            return;
+        }
+
         Vector2 forwardPosition = (Vector2)transform.position + (soulRigidbody.velocity/2f);
 
         for(int i=1; i<10; i++) {

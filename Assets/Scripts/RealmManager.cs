@@ -7,7 +7,13 @@ public class RealmManager : MonoBehaviour
 {
     private GameManagerScript gameManager;
     public Color realmColor;
+    public bool acquired = false;
     public int maxSoulCount = 10;
+    public int maxSoulThisWave = 0;
+    public int maxChaosWaves = 2;
+    public int chaosWavesCompleted = 0;
+    public bool chaosWaveOn = false;
+
     public enum Realm
     {
         FIRE,
@@ -15,7 +21,7 @@ public class RealmManager : MonoBehaviour
         GATE
     }
     public Realm currentRealm;
-    private int releasedSoulCount = 0;
+    [SerializeField] private int releasedSoulCount = 0;
 
     private Tilemap tilemap;
 
@@ -25,6 +31,7 @@ public class RealmManager : MonoBehaviour
     {
         gameManager = GameManagerScript._instance;
         tilemap = GetComponent<Tilemap>();
+        maxSoulThisWave = maxSoulCount;
     }
 
     // Update is called once per frame
@@ -41,17 +48,25 @@ public class RealmManager : MonoBehaviour
         // Debug.Log("Blast at "+ gridPosition);
         StartCoroutine(Blast(gridPosition));
             
-        tilemap.color = Color.Lerp(Color.white, realmColor, GetReleasedSoulFraction());
+        tilemap.color = Color.Lerp(Color.white, realmColor, GetRealmControlFraction());
     }
 
     public float GetReleasedSoulFraction()
     {
-        return (float)releasedSoulCount/maxSoulCount;
+        return (float)releasedSoulCount/maxSoulThisWave;
     }
 
     public float GetSoulFraction()
     {
-        return (float)soulList.Count/maxSoulCount;
+        return (float)soulList.Count/maxSoulThisWave;
+    }
+
+    public float GetRealmControlFraction()
+    {
+        if(acquired)
+            return 1-(float)soulList.Count/maxSoulCount;
+        else
+            return GetReleasedSoulFraction();
     }
 
     public int GetSoulCount()
@@ -59,25 +74,35 @@ public class RealmManager : MonoBehaviour
         return soulList.Count;
     }
 
+    public bool SpawnMoreSouls()
+    {
+        return (soulList.Count+releasedSoulCount)<maxSoulThisWave;
+    }
+
     public bool AddSoulToRealm(SoulController soul)
     {
-        if(soulList.Count+1 > maxSoulCount)
+        if(soulList.Count >= maxSoulThisWave)
             return false;
             
         soulList.Add(soul);
+        tilemap.color = Color.Lerp(Color.white, realmColor, GetRealmControlFraction());
         return true;
     }
 
     public bool RemoveSoulFromRealm(SoulController soul, Vector3 origin)
     {
-        Hit(origin);
-        GameObject.Destroy(soul.gameObject);
         if(!soulList.Contains(soul))
             return false;
 
         releasedSoulCount += 1;
         gameManager.SoulReleased();
-        return soulList.Remove(soul);
+        if(releasedSoulCount == maxSoulThisWave && soulList.Count == 1) {
+            EndChaosWave();
+        }
+        GameObject.Destroy(soul.gameObject);
+        bool success = soulList.Remove(soul);
+        Hit(origin);
+        return success;
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -151,6 +176,24 @@ public class RealmManager : MonoBehaviour
                 tilemap.SetColor(ipos, color);
             }
         }
+    }
+
+    public void TriggerChaosWave(float difficultyNormalized)
+    {
+        if(chaosWaveOn || soulList.Count!=0 || chaosWavesCompleted==maxChaosWaves)
+            return;
+        
+        chaosWaveOn = true;
+        maxSoulThisWave = (int)Mathf.Ceil(maxSoulCount * difficultyNormalized);
+        releasedSoulCount = 0;
+    }
+
+    private void EndChaosWave()
+    {
+        chaosWaveOn = false;
+        chaosWavesCompleted += 1;
+        acquired = true;
+        Debug.Log("Realm acquired");
     }
 
 }
