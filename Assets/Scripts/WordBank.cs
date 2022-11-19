@@ -15,6 +15,11 @@ public class WordBank : MonoBehaviour
         "arm-floaties", "lifeguard", "swimming skill"
     };
 
+    private static List<string> gateWords = new List<string>()
+    {
+        "open", "build", "pass"
+    };
+
     private static List<string> workingWords = new List<string>();
 
     /*private void Awake()
@@ -60,8 +65,27 @@ public class WordBank : MonoBehaviour
                 workingWords = waterWords;
                 break;
             }
+            case(RealmManager.Realm.GATE):
+            {
+                workingWords = gateWords;
+                break;
+            }
         }
             
+        Shuffle(workingWords);
+        string newWord = string.Empty;
+        if(workingWords.Count != 0)
+        {
+            newWord = workingWords.Last();
+            // Don't remove words from list
+            //workingWords.Remove(newWord);
+        }
+        return newWord;
+    }
+
+    public static string PickGateWord()
+    {
+        workingWords = gateWords;
         Shuffle(workingWords);
         string newWord = string.Empty;
         if(workingWords.Count != 0)

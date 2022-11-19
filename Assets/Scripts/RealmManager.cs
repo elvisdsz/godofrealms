@@ -11,7 +11,8 @@ public class RealmManager : MonoBehaviour
     public enum Realm
     {
         FIRE,
-        WATER
+        WATER,
+        GATE
     }
     public Realm currentRealm;
     private int releasedSoulCount = 0;

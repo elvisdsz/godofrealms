@@ -33,7 +33,6 @@ public abstract class Typer : MonoBehaviour
             }
             CheckKeyPressed();
         }
-        
         RefreshUI();
     }
 

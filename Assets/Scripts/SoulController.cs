@@ -40,8 +40,6 @@ public class SoulController : Typer
         Wander(); // soul movement
 
         TyperUpdate();
-        
-        // TODO: soul stays in the same realm
     }
 
     private void Wander()
