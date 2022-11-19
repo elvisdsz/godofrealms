@@ -6,7 +6,8 @@ public class GameManagerScript : MonoBehaviour
 {
     public static GameManagerScript _instance;
 
-    PlayerMovement player;
+    private PlayerMovement player;
+    private GameIndicators gameIndicators;
     private int totalSoulsReleased = 0;
     private float soulReleaseAverageTime = 0f;
     private float timeSinceLastSoulRelease = 0f;
@@ -29,14 +30,20 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        gameIndicators = GameIndicators._instance;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // if player in realm and realm has at least one soul
-        if(player.GetRealm() != null && player.GetRealm().GetSoulCount()>0)
-            timeSinceLastSoulRelease += Time.deltaTime;
+        if(player.GetRealm() != null)
+        {
+            gameIndicators.UpdateRealmControlMeter(player.GetRealm().GetReleasedSoulFraction());
+
+            // if player in realm and realm has at least one soul
+            if(player.GetRealm().GetSoulCount()>0)
+                timeSinceLastSoulRelease += Time.deltaTime;
+        }
     }
 
     public void SoulReleased()
@@ -56,5 +63,17 @@ public class GameManagerScript : MonoBehaviour
     public int GetTotalSoulsReleased()
     {
         return totalSoulsReleased;
+    }
+
+    public void SetPlayerRealm(RealmManager realm)
+    {
+        player.SetNewRealm(realm);
+        gameIndicators.ShowRealmControlMeter(realm.realmColor, realm.GetReleasedSoulFraction());
+    }
+
+    public void ResetPlayerRealm(RealmManager realm)
+    {
+        player.ResetRealm(realm);
+        gameIndicators.HideRealmControlMeter();
     }
 }

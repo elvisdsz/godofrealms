@@ -83,8 +83,7 @@ public class RealmManager : MonoBehaviour
     {
         if(collider.gameObject.tag == "Player")
         {
-            PlayerMovement player = collider.gameObject.GetComponent<PlayerMovement>();
-            player.SetNewRealm(this);
+            gameManager.SetPlayerRealm(this);
         }
     }
 
@@ -92,8 +91,7 @@ public class RealmManager : MonoBehaviour
     {
         if(collider.gameObject.tag == "Player")
         {
-            PlayerMovement player = collider.gameObject.GetComponent<PlayerMovement>();
-            player.ResetRealm(this);
+            gameManager.ResetPlayerRealm(this);
         }
     }
 
