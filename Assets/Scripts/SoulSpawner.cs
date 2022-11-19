@@ -21,7 +21,7 @@ public class SoulSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(spawnPoints.Length>0 && realmManager.GetSoulFraction()<1)
+        if(spawnPoints.Length>0 && realmManager.GetSoulFraction()<1 && realmManager.GetReleasedSoulFraction()<1)
         {
             timeSinceLastSpawn += Time.deltaTime;
             if(timeSinceLastSpawn >= spawnTimeInterval || realmManager.GetSoulFraction()==0f) {
