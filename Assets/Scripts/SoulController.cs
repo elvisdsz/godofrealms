@@ -13,11 +13,13 @@ public class SoulController : Typer
 
     private bool released = false;
 
+    private PlayerMovement playerMovement;
+
     // Start is called before the first frame update
     void Start()
     {
         soulRigidbody = GetComponent<Rigidbody2D>();
-        //Init("PEACE", realm); // test-only
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
     }
 
     public void Init(string word, RealmManager realm)
@@ -86,5 +88,14 @@ public class SoulController : Typer
     public override void WordCompleted()
     {
         ReleaseSoul();
+    }
+
+    public override void OnCorrectKeyPress()
+    {
+        if(playerMovement.powerupData.IsPowerupEnabled(PowerupData.PowerupType.ATTRACT_SOUL))
+        {
+            Vector2 velocity = playerMovement.transform.position - transform.position;
+            soulRigidbody.velocity = velocity;
+        }
     }
 }

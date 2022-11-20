@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D playerRigidbody;
     private float speed = 3f;
 
+    public PowerupData powerupData = new PowerupData();
+
     // Start is called before the first frame update
     void Start()
     {

@@ -62,10 +62,16 @@ public abstract class Typer : MonoBehaviour
         if(remainingWord[0] == letter.ToLower()[0])
         {
             remainingWord = remainingWord.Remove(0, 1);
+            OnCorrectKeyPress();
             RefreshUI();
             if(remainingWord.Length == 0)
                 WordCompleted();
         }
+    }
+
+    public virtual void OnCorrectKeyPress()
+    {
+        // Do nothing
     }
 
     public void RefreshUI()
