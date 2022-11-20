@@ -16,11 +16,8 @@ public class RealmManager : MonoBehaviour
     public bool chaosWaveOn = false;
 
     public enum Realm
-    {
-        FIRE,
-        WATER,
-        GATE
-    }
+    { FIRE, WATER, EARTH, METAL, FINAL, GATE }
+
     public Realm currentRealm;
     [SerializeField] private int releasedSoulCount = 0;
 
