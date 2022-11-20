@@ -10,6 +10,9 @@ public class GameIndicators : MonoBehaviour
     public GameObject realmControlSliderGO;
     private Slider realmControlSlider;
     public Image meterFillImage;
+    public GameObject BadgeBeltPanel;
+    public GameObject BadgePrefab;
+    private Dictionary<RealmManager, BadgeController> realmBadgeDict = new Dictionary<RealmManager, BadgeController>();
 
     void Awake()
 	{
@@ -52,5 +55,23 @@ public class GameIndicators : MonoBehaviour
     public void HideRealmControlMeter()
     {
         realmControlSliderGO.SetActive(false);
+    }
+
+    public void AddNewRealmBadge(RealmManager realm, float realmControl)
+    {
+        GameObject newBadge = Instantiate(BadgePrefab);
+        newBadge.transform.SetParent(BadgeBeltPanel.transform, false);
+        BadgeController badgeController = newBadge.GetComponent<BadgeController>();
+        badgeController.Init(realm.realmIcon, realm.realmColor, realmControl);
+        realmBadgeDict.Add(realm, badgeController);
+    }
+
+    public void UpdateRealmBadge(RealmManager realm, float realmControl)
+    {
+        if(!realmBadgeDict.ContainsKey(realm))
+            return;
+
+        BadgeController badgeController = realmBadgeDict[realm];
+        badgeController.UpdateRealmControlValue(realmControl);
     }
 }

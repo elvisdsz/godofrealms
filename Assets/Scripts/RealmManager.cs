@@ -7,6 +7,7 @@ public class RealmManager : MonoBehaviour
 {
     private GameManagerScript gameManager;
     public Color realmColor;
+    public Sprite realmIcon;
     public bool acquired = false;
     public int maxSoulCount = 10;
     public int maxSoulThisWave = 0;

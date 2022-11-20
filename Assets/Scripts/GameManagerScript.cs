@@ -68,6 +68,8 @@ public class GameManagerScript : MonoBehaviour
                 player.GetRealm().TriggerChaosWave(0.5f);
             }
         }
+
+        UpdateRealmIndicators();
     }
 
     public void SoulReleased()
@@ -92,7 +94,10 @@ public class GameManagerScript : MonoBehaviour
     public void SetPlayerRealm(RealmManager realm)
     {
         if(!visitedRealms.Contains(realm))
+        {
             visitedRealms.Add(realm);
+            HandleNewRealm(realm);
+        }
 
         player.SetNewRealm(realm);
         gameIndicators.ShowRealmControlMeter(realm.realmColor, realm.GetReleasedSoulFraction());
@@ -158,5 +163,16 @@ public class GameManagerScript : MonoBehaviour
                 realmList.Add(realm);
         
         return realmList;
+    }
+
+    private void HandleNewRealm(RealmManager realm)
+    {
+        gameIndicators.AddNewRealmBadge(realm, realm.GetRealmControlFraction());
+    }
+
+    private void UpdateRealmIndicators()
+    {
+        foreach(RealmManager realm in visitedRealms)
+            gameIndicators.UpdateRealmBadge(realm, realm.GetRealmControlFraction());
     }
 }
