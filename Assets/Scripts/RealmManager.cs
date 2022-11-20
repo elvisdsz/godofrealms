@@ -185,6 +185,7 @@ public class RealmManager : MonoBehaviour
         
         chaosWaveOn = true;
         maxSoulThisWave = (int)Mathf.Ceil(maxSoulCount * difficultyNormalized);
+        maxSoulThisWave = maxSoulThisWave==0? 1: maxSoulThisWave;
         releasedSoulCount = 0;
     }
 
@@ -193,6 +194,7 @@ public class RealmManager : MonoBehaviour
         chaosWaveOn = false;
         chaosWavesCompleted += 1;
         acquired = true;
+        gameManager.ChaosWaveEnded(this);
         Debug.Log("Realm acquired");
     }
 

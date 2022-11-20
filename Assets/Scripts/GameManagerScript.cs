@@ -6,11 +6,16 @@ public class GameManagerScript : MonoBehaviour
 {
     public static GameManagerScript _instance;
 
+    private List<RealmManager> visitedRealms = new List<RealmManager>();
+
     private PlayerMovement player;
     private GameIndicators gameIndicators;
     private int totalSoulsReleased = 0;
     private float soulReleaseAverageTime = 0f;
+    private float lastReleaseAverageTime = 4f;
     private float timeSinceLastSoulRelease = 0f;
+
+    [SerializeField] private float chaosTriggerCountdownTimer=0f;
 
 
     void Awake()
@@ -36,6 +41,20 @@ public class GameManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(chaosTriggerCountdownTimer > 0f)
+        {
+            chaosTriggerCountdownTimer -= Time.deltaTime;
+            if(chaosTriggerCountdownTimer <= 0f)
+            {
+                chaosTriggerCountdownTimer = 0f;
+                TriggerChaos();
+            }
+        }
+
+        // If no chaos anywhere, create chaos
+        if(visitedRealms.Count>1 && GetAllAcquiredNonChaoticRealms().Count == 0f)
+            TriggerChaos();
+
         if(player.GetRealm() != null)
         {
             gameIndicators.UpdateRealmControlMeter(player.GetRealm().GetRealmControlFraction());
@@ -72,15 +91,72 @@ public class GameManagerScript : MonoBehaviour
 
     public void SetPlayerRealm(RealmManager realm)
     {
+        if(!visitedRealms.Contains(realm))
+            visitedRealms.Add(realm);
+
         player.SetNewRealm(realm);
         gameIndicators.ShowRealmControlMeter(realm.realmColor, realm.GetReleasedSoulFraction());
         if(realm.chaosWavesCompleted <= 0)
-            realm.TriggerChaosWave(1f);
+            TriggerChaos(realm, 1f);
     }
 
     public void ResetPlayerRealm(RealmManager realm)
     {
         player.ResetRealm(realm);
         gameIndicators.HideRealmControlMeter();
+    }
+
+    private void TriggerChaos()
+    {
+        // choose a random acquired non-chaotic realm
+        RealmManager realm = ChooseRandomRealmForChaos();
+        
+        TriggerChaos(realm, (soulReleaseAverageTime/lastReleaseAverageTime)/2);
+    }
+
+    private void TriggerChaos(RealmManager realm, float difficultyNormalized)
+    {
+        if(realm == null)
+        {
+            if(player.GetRealm() != null)
+                chaosTriggerCountdownTimer = player.GetRealm().GetSoulCount() * soulReleaseAverageTime;
+            chaosTriggerCountdownTimer = chaosTriggerCountdownTimer<=1f? 5f: chaosTriggerCountdownTimer;
+            return;
+        }
+
+        Debug.Log("Attempting to trigger chaos in realm "+realm.name+" with normalized difficulty ="+difficultyNormalized);
+
+        // trigger chaos in chosen realm
+        realm.TriggerChaosWave(difficultyNormalized);
+
+        // reset countdown timer with new soul count and player perf
+        chaosTriggerCountdownTimer = realm.maxSoulThisWave * soulReleaseAverageTime;
+    }
+
+    public void ChaosWaveEnded(RealmManager realm)
+    {
+        lastReleaseAverageTime = soulReleaseAverageTime;
+    }
+
+    private RealmManager ChooseRandomRealmForChaos()
+    {
+        // Random acquired non-chaotic realm
+        List<RealmManager> candidateRealmList = GetAllAcquiredNonChaoticRealms();
+
+        if(candidateRealmList.Count == 0)
+            return null;
+        
+        int randomIndex = Random.Range(0, candidateRealmList.Count);
+        return candidateRealmList[randomIndex];
+    }
+
+    private List<RealmManager> GetAllAcquiredNonChaoticRealms()
+    {
+        List<RealmManager> realmList = new List<RealmManager>();
+        foreach(RealmManager realm in visitedRealms)
+            if(realm.acquired && !realm.chaosWaveOn)
+                realmList.Add(realm);
+        
+        return realmList;
     }
 }
