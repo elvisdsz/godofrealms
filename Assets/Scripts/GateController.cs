@@ -26,6 +26,6 @@ public class GateController : Typer
     public override void WordCompleted()
     {
         bridgeController = GetComponentInParent<BridgeController>();
-        bridgeController.EnableBridge(this);
+        bridgeController.EnableBridge();
     }
 }

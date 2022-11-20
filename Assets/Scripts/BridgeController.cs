@@ -7,11 +7,13 @@ public class BridgeController : MonoBehaviour
 {
     private GateController gate;
     private TilemapRenderer tilemap;
+    private BridgeController bridgeController;
     // Start is called before the first frame update
     void Start()
     {
         tilemap = GetComponent<TilemapRenderer>();
         tilemap.enabled = false;
+        bridgeController = GetComponent<BridgeController>();
     }
 
     // Update is called once per frame
@@ -20,9 +22,13 @@ public class BridgeController : MonoBehaviour
 
     }
 
-    public void EnableBridge(GateController gate)
+    public void EnableBridge()
     {
         tilemap.enabled = true;
-        GameObject.Destroy(gate.gameObject);
+        for(int i = 0; i < this.transform.childCount; i++)
+        {
+            GameObject gO = this.transform.GetChild(i).gameObject;
+            GameObject.Destroy(gO);
+        }
     }
 }
