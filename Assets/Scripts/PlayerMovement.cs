@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private RealmManager realm;
 
     private Rigidbody2D playerRigidbody;
-    private float speed = 3f;
+    public float speed = 3f;
 
     public PowerupData powerupData = new PowerupData();
 
