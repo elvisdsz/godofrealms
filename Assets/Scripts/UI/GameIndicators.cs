@@ -14,6 +14,8 @@ public class GameIndicators : MonoBehaviour
     public GameObject BadgePrefab;
     private Dictionary<RealmManager, BadgeController> realmBadgeDict = new Dictionary<RealmManager, BadgeController>();
 
+    private Canvas HUDCanvas;
+
     void Awake()
 	{
 		if (_instance != null)
@@ -24,6 +26,7 @@ public class GameIndicators : MonoBehaviour
 		{
 			_instance = this;
 			DontDestroyOnLoad(gameObject);
+            HUDCanvas = GetComponent<Canvas>();
 		}
     }
 
@@ -73,5 +76,15 @@ public class GameIndicators : MonoBehaviour
 
         BadgeController badgeController = realmBadgeDict[realm];
         badgeController.UpdateRealmControlValue(realmControl);
+    }
+
+    public void HideHUD()
+    {
+        HUDCanvas.enabled = false;
+    }
+
+    public void ShowHUD()
+    {
+        HUDCanvas.enabled = true;
     }
 }

@@ -9,6 +9,7 @@ public abstract class Typer : MonoBehaviour
     private string word;
     private string remainingWord;
     private bool inCircleFlag=false;
+    protected bool ignoreCircleCheck=false;
     private float timeSinceOverlap;
     private float timeToHideText = 1f;
 
@@ -21,17 +22,22 @@ public abstract class Typer : MonoBehaviour
         inCircleFlag = false;
         wordTextUI.outlineColor = Color.black;
         wordTextUI.outlineWidth = 0.3f;
+        if(ignoreCircleCheck)
+            inCircleFlag = true;
     }
 
     public void TyperUpdate()
     {
         if(inCircleFlag) {
-            timeSinceOverlap += Time.deltaTime;
-            if(timeSinceOverlap >= timeToHideText)
+            if(!ignoreCircleCheck)
             {
-                inCircleFlag=false;
-                // Reset remaining word after leaving circle
-                remainingWord = word;
+                timeSinceOverlap += Time.deltaTime;
+                if(timeSinceOverlap >= timeToHideText)
+                {
+                    inCircleFlag=false;
+                    // Reset remaining word after leaving circle
+                    remainingWord = word;
+                }
             }
             CheckKeyPressed();
         }
@@ -79,7 +85,7 @@ public abstract class Typer : MonoBehaviour
     public void RefreshUI()
     {
         wordTextUI.text = "<s><color=grey>"+word.Substring(0,word.Length-remainingWord.Length)+"</color></s><color=yellow>"+remainingWord+"</color>";
-        wordTextUI.enabled = inCircleFlag;
+        wordTextUI.enabled = inCircleFlag || ignoreCircleCheck;
     }
 
     public abstract void WordCompleted();

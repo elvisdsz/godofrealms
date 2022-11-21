@@ -10,6 +10,7 @@ public class GameManagerScript : MonoBehaviour
 
     private PlayerMovement player;
     private GameIndicators gameIndicators;
+    private MainUICanvas mainUICanvas;
     private int totalSoulsReleased = 0;
     private float soulReleaseAverageTime = 0f;
     private float lastReleaseAverageTime = 4f;
@@ -36,6 +37,27 @@ public class GameManagerScript : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         gameIndicators = GameIndicators._instance;
+        mainUICanvas = MainUICanvas._instance;
+
+        gameIndicators.HideHUD();
+        mainUICanvas.ShowStartScreenCanvas();
+        PauseGame();
+    }
+
+    public void StartGame()
+    {
+        ResumeGame();
+        gameIndicators.ShowHUD();
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
     }
 
     // Update is called once per frame
