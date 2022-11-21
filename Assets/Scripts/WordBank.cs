@@ -7,14 +7,24 @@ public class WordBank : MonoBehaviour
 {
     private static List<string> fireWords = new List<string>()
     {
-        "water", "AC", "aircon", "oxygen", "trees"
+        "water", "AC", "aircon", "oxygen", "trees", "fan", "rain", "vegetation", "manual", "plant"
     };
 
     private static List<string> waterWords = new List<string>()
     {
-        "arm-floaties", "lifeguard", "swimming skill"
+        "buoyancy", "rain", "drizzle", "warmup", "float", "boat", "repair", "fix"
     };
 
+    private static List<string> earthWords = new List<string>()
+    {
+        "shelter", "build", "run", "go", "leave", "prepare", "strength", "tree", "veg", "aware"
+    };
+
+    private static List<string> metalWords = new List<string>()
+    {
+        "bullet", "axe", "knife", "war", "gun", "rifle", "blade", "fight", "missile", "warfare", "battle", "invasion"
+    };
+    
     private static List<string> gateWords = new List<string>()
     {
         "open", "build", "pass"
@@ -55,21 +65,24 @@ public class WordBank : MonoBehaviour
     {
         switch(realm.currentRealm)
         {
-            case(RealmManager.Realm.FIRE):
-            {
+            case RealmManager.Realm.FIRE:
                 workingWords = fireWords;
                 break;
-            }
-            case(RealmManager.Realm.WATER):
-            {
+            case RealmManager.Realm.WATER:
                 workingWords = waterWords;
                 break;
-            }
-            case(RealmManager.Realm.GATE):
-            {
+            case RealmManager.Realm.EARTH:
+                workingWords = earthWords;
+                break;
+            case RealmManager.Realm.METAL:
+                workingWords = metalWords;
+                break;
+            case RealmManager.Realm.GATE:
                 workingWords = gateWords;
                 break;
-            }
+            default:
+                workingWords = new List<string>(){"peace"};
+                break;
         }
             
         Shuffle(workingWords);
