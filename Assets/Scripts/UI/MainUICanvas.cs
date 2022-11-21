@@ -24,7 +24,7 @@ public class MainUICanvas : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startScreenCanvas.SetActive(false);
+        // startScreenCanvas.SetActive(false);
     }
 
     void Update()
