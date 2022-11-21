@@ -46,8 +46,9 @@ public class RealmManager : MonoBehaviour
 
         // Debug.Log("Blast at "+ gridPosition);
         StartCoroutine(Blast(gridPosition));
-            
-        tilemap.color = Color.Lerp(Color.white, realmColor, GetRealmControlFraction());
+        
+        if(!acquired)
+            tilemap.color = Color.Lerp(Color.white, realmColor, GetRealmControlFraction());
     }
 
     public float GetReleasedSoulFraction()
@@ -84,7 +85,9 @@ public class RealmManager : MonoBehaviour
             return false;
             
         soulList.Add(soul);
-        tilemap.color = Color.Lerp(Color.white, realmColor, GetRealmControlFraction());
+        if(!acquired)
+            tilemap.color = Color.Lerp(Color.white, realmColor, GetRealmControlFraction());
+
         return true;
     }
 
@@ -201,6 +204,7 @@ public class RealmManager : MonoBehaviour
         chaosWaveOn = false;
         chaosWavesCompleted += 1;
         acquired = true;
+        tilemap.color = Color.Lerp(Color.white, realmColor, GetRealmControlFraction());
         gameManager.ChaosWaveEnded(this);
         Debug.Log("Realm acquired");
     }
