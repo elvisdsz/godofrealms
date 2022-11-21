@@ -14,6 +14,7 @@ public class SoulController : Typer
     private bool released = false;
 
     private PlayerMovement playerMovement;
+    private float attractCoeff;
 
     // Start is called before the first frame update
     void Start()
@@ -92,10 +93,13 @@ public class SoulController : Typer
 
     public override void OnCorrectKeyPress()
     {
-        if(playerMovement.powerupData.IsPowerupEnabled(PowerupData.PowerupType.ATTRACT_SOUL))
+        /*if(playerMovement.powerupData.IsPowerupEnabled(PowerupData.PowerupType.ATTRACT_SOUL))
         {
             Vector2 velocity = playerMovement.transform.position - transform.position;
             soulRigidbody.velocity = velocity;
-        }
+        }*/
+        attractCoeff = playerMovement.powerupData.PowerupValue(PowerupData.PowerupType.ATTRACT_SOUL);
+        Vector2 velocity = (playerMovement.transform.position - transform.position) * attractCoeff;
+        soulRigidbody.velocity = velocity;
     }
 }
