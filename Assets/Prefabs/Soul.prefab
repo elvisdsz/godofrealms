@@ -279,7 +279,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 47
+  m_SortingOrder: 50
   m_TargetDisplay: 0
 --- !u!114 &4934795919496695182
 MonoBehaviour:
@@ -398,7 +398,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 45
+  m_SortingOrder: 50
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0.14312923, g: 0.265867, b: 0.4056604, a: 1}
   m_FlipX: 0
@@ -424,6 +424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wordTextUI: {fileID: 9141654047152665871}
   realm: {fileID: 0}
+  tutorialSoul: 0
 --- !u!50 &7115248191425702778
 Rigidbody2D:
   serializedVersion: 4

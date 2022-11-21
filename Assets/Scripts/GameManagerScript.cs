@@ -133,13 +133,17 @@ public class GameManagerScript : MonoBehaviour
 
     public void SetPlayerRealm(RealmManager realm)
     {
+        player.SetNewRealm(realm);
+        
+        if(realm.currentRealm == RealmManager.Realm.TUTORIAL)
+            return;
+
         if(!visitedRealms.Contains(realm))
         {
             visitedRealms.Add(realm);
             HandleNewRealm(realm);
         }
 
-        player.SetNewRealm(realm);
         gameIndicators.ShowRealmControlMeter(realm.realmColor, realm.GetReleasedSoulFraction());
         if(realm.chaosWavesCompleted <= 0)
             TriggerChaos(realm, 1f);
@@ -199,7 +203,7 @@ public class GameManagerScript : MonoBehaviour
     {
         List<RealmManager> realmList = new List<RealmManager>();
         foreach(RealmManager realm in visitedRealms)
-            if(realm.acquired && !realm.chaosWaveOn)
+            if(realm.chaosPossible && realm.acquired && !realm.chaosWaveOn)
                 realmList.Add(realm);
         
         return realmList;

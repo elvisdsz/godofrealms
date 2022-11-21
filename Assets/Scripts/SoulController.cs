@@ -16,11 +16,17 @@ public class SoulController : Typer
     private PlayerMovement playerMovement;
     private float attractCoeff;
 
+    [SerializeField] private bool tutorialSoul;
+
     // Start is called before the first frame update
     void Start()
     {
         soulRigidbody = GetComponent<Rigidbody2D>();
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+
+        if(tutorialSoul) {
+            base.Init("RELEASE");
+        }
     }
 
     public void Init(string word, RealmManager realm)
@@ -40,7 +46,8 @@ public class SoulController : Typer
 
         timeSinceSpawn += Time.deltaTime;
 
-        Wander(); // soul movement
+        if(!tutorialSoul)
+            Wander(); // soul movement
 
         TyperUpdate();
     }
@@ -83,7 +90,13 @@ public class SoulController : Typer
     {
         released = true;
         soulRigidbody.velocity = Vector2.zero;
-        realm.RemoveSoulFromRealm(this, transform.position);
+        if(!tutorialSoul)
+            realm.RemoveSoulFromRealm(this, transform.position);
+        else {
+            Vector3Int gridPosition = playerMovement.GetRealm().GetPositionOnTilemap(transform.position);
+            StartCoroutine(playerMovement.GetRealm().Blast(gridPosition));
+            GameObject.Destroy(gameObject, 1f);
+        }
     }
 
     public override void WordCompleted()

@@ -11,11 +11,11 @@ public class RealmManager : MonoBehaviour
     public bool acquired = false;
     public int maxSoulCount = 10;
     public int maxSoulThisWave = 0;
-    public int maxChaosWaves = 2;
+    public bool chaosPossible = true;
     public int chaosWavesCompleted = 0;
     public bool chaosWaveOn = false;
 
-    public enum Realm{ FIRE, WATER, EARTH, METAL, FINAL, GATE }
+    public enum Realm{ TUTORIAL, FIRE, WATER, EARTH, METAL, FINAL, GATE }
     //public enum PowerupType{ BUILD_BRIDGE, SPEED_UP, ATTRACT_SOUL, ETERNAL_RELEASE }
 
     public Realm currentRealm;
@@ -128,7 +128,15 @@ public class RealmManager : MonoBehaviour
         return tilemap.HasTile(gridPosition);
     }
 
-    IEnumerator Blast(Vector3Int position)
+    public Vector3Int GetPositionOnTilemap(Vector2 position)
+    {
+        GridLayout grid = GetComponentInParent<GridLayout>();
+        Vector3Int gridPosition = grid.WorldToCell(position);
+
+        return gridPosition;
+    }
+
+    public IEnumerator Blast(Vector3Int position)
     {
         Vector3Int[] pattern1 = {position, position+Vector3Int.up, position+Vector3Int.down, position+Vector3Int.right, position+Vector3Int.left,
             position+Vector3Int.up+Vector3Int.right, position+Vector3Int.up+Vector3Int.left,
@@ -179,7 +187,7 @@ public class RealmManager : MonoBehaviour
 
     public void TriggerChaosWave(float difficultyNormalized)
     {
-        if(chaosWaveOn || soulList.Count!=0 || chaosWavesCompleted==maxChaosWaves)
+        if(!chaosPossible || chaosWaveOn || soulList.Count!=0)
             return;
         
         chaosWaveOn = true;
