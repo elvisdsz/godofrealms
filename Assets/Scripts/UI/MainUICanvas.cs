@@ -6,6 +6,7 @@ public class MainUICanvas : MonoBehaviour
 {
     public static MainUICanvas _instance;
     public GameObject startScreenCanvas;
+    public GameObject pauseScreenCanvas;
 
     void Awake()
 	{
@@ -26,6 +27,13 @@ public class MainUICanvas : MonoBehaviour
         startScreenCanvas.SetActive(false);
     }
 
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape) && Time.timeScale==1) {
+            PauseGame();
+        }
+    }
+
     public void ShowStartScreenCanvas()
     {
         startScreenCanvas.SetActive(true);
@@ -35,5 +43,29 @@ public class MainUICanvas : MonoBehaviour
     {
         startScreenCanvas.SetActive(false);
         GameManagerScript._instance.StartGame();
+    }
+
+    public void PauseGame()
+    {
+        pauseScreenCanvas.SetActive(true);
+        GameManagerScript._instance.PauseGame();
+    }
+
+    public void ResumeGame()
+    {
+        pauseScreenCanvas.SetActive(false);
+        GameManagerScript._instance.ResumeGame();
+    }
+
+    public void QuitGame()
+    {
+        pauseScreenCanvas.SetActive(false);
+        GameManagerScript._instance.QuitGame();
+    }
+
+    public void RestartGame()
+    {
+        pauseScreenCanvas.SetActive(false);
+        GameManagerScript._instance.RestartGame();
     }
 }

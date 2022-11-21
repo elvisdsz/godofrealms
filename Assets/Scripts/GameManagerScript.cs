@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManagerScript : MonoBehaviour
 {
     public static GameManagerScript _instance;
+
+    public TMP_FontAsset typerFont;
 
     private List<RealmManager> visitedRealms = new List<RealmManager>();
 
@@ -52,12 +56,26 @@ public class GameManagerScript : MonoBehaviour
 
     public void PauseGame()
     {
+        gameIndicators.HideHUD();
         Time.timeScale = 0f;
     }
 
     public void ResumeGame()
     {
+        gameIndicators.ShowHUD();
         Time.timeScale = 1f;
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("WorldScene");
+    }
+
+    public void QuitGame()
+    {
+        Time.timeScale = 1f;
+        Application.Quit();
     }
 
     // Update is called once per frame

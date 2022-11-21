@@ -26,9 +26,14 @@ public class TyperUI : Typer
         functionOnWordComplete.Invoke();
     }
 
-    public void TestPrint()
+    void OnEnable()
     {
-        Debug.Log("It's working!!");
+        this.ResetWord();
+    }
+
+    void OnDisable()
+    {
+        this.ResetWord();
     }
 
 }

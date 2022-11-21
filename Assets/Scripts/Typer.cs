@@ -20,6 +20,7 @@ public abstract class Typer : MonoBehaviour
         remainingWord = word;
         timeSinceOverlap = 10f;
         inCircleFlag = false;
+        wordTextUI.font = GameManagerScript._instance.typerFont;
         wordTextUI.outlineColor = Color.black;
         wordTextUI.outlineWidth = 0.3f;
         if(ignoreCircleCheck)
@@ -35,8 +36,7 @@ public abstract class Typer : MonoBehaviour
                 if(timeSinceOverlap >= timeToHideText)
                 {
                     inCircleFlag=false;
-                    // Reset remaining word after leaving circle
-                    remainingWord = word;
+                    ResetWord();
                 }
             }
             CheckKeyPressed();
@@ -86,6 +86,11 @@ public abstract class Typer : MonoBehaviour
     {
         wordTextUI.text = "<s><color=grey>"+word.Substring(0,word.Length-remainingWord.Length)+"</color></s><color=yellow>"+remainingWord+"</color>";
         wordTextUI.enabled = inCircleFlag || ignoreCircleCheck;
+    }
+
+    public void ResetWord()
+    {
+        remainingWord = word;
     }
 
     public abstract void WordCompleted();
