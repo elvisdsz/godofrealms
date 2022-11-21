@@ -28,7 +28,7 @@ public class SoulSpawner : MonoBehaviour
             return;
 
         // Skip soul spawning if player hasn't demonstrated release soul mechanic
-        if(spawnPoints.Length<0 || (gameManager.GetTotalSoulsReleased()<1 && realmManager.GetSoulCount()>2))
+        if(spawnPoints.Length<=0 || (gameManager.GetTotalSoulsReleased()<1 && realmManager.GetSoulCount()>2))
             return;
 
         if(realmManager.SpawnMoreSouls())

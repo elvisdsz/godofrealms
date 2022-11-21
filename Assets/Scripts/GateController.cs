@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class GateController : Typer
 {
+    private GameManagerScript gameManager;
     private Rigidbody2D gateRigidbody;
     private BridgeController bridgeController;
     private PlayerMovement player;
     public bool IsTutorial = false;
+    public bool IsGoldGate = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameManagerScript._instance;
         player = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
         gateRigidbody = GetComponent<Rigidbody2D>();    //Redundant but required
         string pickedWord = WordBank.PickGateWord();
@@ -28,8 +31,24 @@ public class GateController : Typer
     {
         bridgeController = GetComponentInParent<BridgeController>();
         // Player has build-bridge powerup or tutorial realm is acquired
-        if(player.powerupData.PowerupValue(PowerupData.PowerupType.BUILD_BRIDGE) == 1f || (IsTutorial && player.GetRealm().acquired))
-            bridgeController.EnableBridge();
+        if(player.powerupData.PowerupValue(PowerupData.PowerupType.BUILD_BRIDGE) >= 0.5f || (IsTutorial && player.GetRealm().acquired))
+        {
+            if(IsGoldGate)
+            {
+                if(player.GetRealm().acquired)
+                {
+                    bridgeController.EnableBridge();
+                    gameManager.OpenGoldGate();
+                }
+                else
+                {
+                    StartCoroutine(base.ChangeWarningColor());
+                    Debug.Log("have to acquire realm to open gold gate");
+                }
+            }
+            else
+                bridgeController.EnableBridge();
+        }
         else
         {
             StartCoroutine(base.ChangeWarningColor());

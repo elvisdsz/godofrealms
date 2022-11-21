@@ -102,7 +102,7 @@ public abstract class Typer : MonoBehaviour
         stopRefreshUI = true;
         remainingWord = word;
         wordTextUI.text = "<color=red>"+remainingWord+"</color>";
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         wordTextUI.text = "<color=yellow>"+remainingWord+"</color>";
         stopRefreshUI = false;
     }

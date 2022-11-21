@@ -19,6 +19,8 @@ public class GameManagerScript : MonoBehaviour
     private float soulReleaseAverageTime = 0f;
     private float lastReleaseAverageTime = 4f;
     private float timeSinceLastSoulRelease = 0f;
+    private int goldGateNum = 0;
+    private bool winGame = false;
 
     [SerializeField] private float chaosTriggerCountdownTimer=0f;
 
@@ -147,6 +149,13 @@ public class GameManagerScript : MonoBehaviour
         gameIndicators.ShowRealmControlMeter(realm.realmColor, realm.GetReleasedSoulFraction());
         if(realm.chaosWavesCompleted <= 0)
             TriggerChaos(realm, 1f);
+
+        // Calc gold gates and see if wins
+        if(goldGateNum >= 3 && realm.currentRealm == RealmManager.Realm.FINAL)
+        {
+            winGame = true;
+            Debug.Log("WIN "+winGame);
+        }
     }
 
     public void ResetPlayerRealm(RealmManager realm)
@@ -224,5 +233,11 @@ public class GameManagerScript : MonoBehaviour
                 player.powerupData.UpdatePowerup(realm.currentPowerUpType, realm.GetRealmControlFraction());
             }
         }
+    }
+
+    public void OpenGoldGate()
+    {
+        goldGateNum += 1;
+        Debug.Log("open gold gate");
     }
 }
