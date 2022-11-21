@@ -78,7 +78,7 @@ public abstract class Typer : MonoBehaviour
 
     public void RefreshUI()
     {
-        wordTextUI.text = "<color=grey>"+word.Substring(0,word.Length-remainingWord.Length)+"</color><color=yellow>"+remainingWord+"</color>";
+        wordTextUI.text = "<s><color=grey>"+word.Substring(0,word.Length-remainingWord.Length)+"</color></s><color=yellow>"+remainingWord+"</color>";
         wordTextUI.enabled = inCircleFlag;
     }
 
