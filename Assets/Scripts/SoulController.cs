@@ -14,7 +14,6 @@ public class SoulController : Typer
     private bool released = false;
 
     private PlayerMovement playerMovement;
-    private float attractCoeff;
 
     [SerializeField] private bool tutorialSoul;
 
@@ -96,6 +95,7 @@ public class SoulController : Typer
             Vector3Int gridPosition = playerMovement.GetRealm().GetPositionOnTilemap(transform.position);
             StartCoroutine(playerMovement.GetRealm().Blast(gridPosition));
             GameObject.Destroy(gameObject, 1f);
+            playerMovement.GetRealm().acquired = true;
         }
     }
 
@@ -111,8 +111,11 @@ public class SoulController : Typer
             Vector2 velocity = playerMovement.transform.position - transform.position;
             soulRigidbody.velocity = velocity;
         }*/
-        attractCoeff = playerMovement.powerupData.PowerupValue(PowerupData.PowerupType.ATTRACT_SOUL);
-        Vector2 velocity = (playerMovement.transform.position - transform.position) * attractCoeff;
-        soulRigidbody.velocity = velocity;
+        if(playerMovement.powerupData.PowerupValue(PowerupData.PowerupType.ATTRACT_SOUL) > 0f)
+        {
+            float attractCoeff = playerMovement.powerupData.PowerupValue(PowerupData.PowerupType.ATTRACT_SOUL);
+            Vector2 velocity = (playerMovement.transform.position - transform.position) * attractCoeff;
+            soulRigidbody.velocity = velocity;
+        }
     }
 }
