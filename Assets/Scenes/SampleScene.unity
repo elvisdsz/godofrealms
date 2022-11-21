@@ -11239,6 +11239,7 @@ MonoBehaviour:
   chaosWavesCompleted: 0
   chaosWaveOn: 0
   currentRealm: 0
+  currentPowerUpType: 1
   releasedSoulCount: 0
 --- !u!114 &576961644
 MonoBehaviour:
@@ -34017,6 +34018,7 @@ MonoBehaviour:
   chaosWavesCompleted: 0
   chaosWaveOn: 0
   currentRealm: 1
+  currentPowerUpType: 2
   releasedSoulCount: 0
 --- !u!114 &1495676513
 MonoBehaviour:
@@ -36550,11 +36552,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 58021512179185650, guid: 3a87aceb5b1c3764890d942c80f598f6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25.1
+      value: 24.8
       objectReference: {fileID: 0}
     - target: {fileID: 58021512179185650, guid: 3a87aceb5b1c3764890d942c80f598f6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.1
+      value: 13.57
       objectReference: {fileID: 0}
     - target: {fileID: 58021512179185650, guid: 3a87aceb5b1c3764890d942c80f598f6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -36587,6 +36589,10 @@ PrefabInstance:
     - target: {fileID: 58021512179185650, guid: 3a87aceb5b1c3764890d942c80f598f6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 58021513018315603, guid: 3a87aceb5b1c3764890d942c80f598f6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

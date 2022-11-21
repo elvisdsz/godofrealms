@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class PowerupData
 {
@@ -20,7 +21,7 @@ public class PowerupData
         powerup[powerupType] = 1f;
     }
 
-    public void UpdatePowerUp(PowerupData.PowerupType powerupType, float newValue)
+    public void UpdatePowerup(PowerupData.PowerupType powerupType, float newValue)
     {
         powerup[powerupType] = newValue;
     }

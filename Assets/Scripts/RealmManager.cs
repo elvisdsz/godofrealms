@@ -15,10 +15,11 @@ public class RealmManager : MonoBehaviour
     public int chaosWavesCompleted = 0;
     public bool chaosWaveOn = false;
 
-    public enum Realm
-    { FIRE, WATER, EARTH, METAL, FINAL, GATE }
+    public enum Realm{ FIRE, WATER, EARTH, METAL, FINAL, GATE }
+    //public enum PowerupType{ BUILD_BRIDGE, SPEED_UP, ATTRACT_SOUL, ETERNAL_RELEASE }
 
     public Realm currentRealm;
+    public PowerupData.PowerupType currentPowerUpType;
     [SerializeField] private int releasedSoulCount = 0;
 
     private Tilemap tilemap;

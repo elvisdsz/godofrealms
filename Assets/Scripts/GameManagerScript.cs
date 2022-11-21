@@ -173,6 +173,12 @@ public class GameManagerScript : MonoBehaviour
     private void UpdateRealmIndicators()
     {
         foreach(RealmManager realm in visitedRealms)
+        {
             gameIndicators.UpdateRealmBadge(realm, realm.GetRealmControlFraction());
+            if(realm.acquired)
+            {
+                player.powerupData.UpdatePowerup(realm.currentPowerUpType, realm.GetRealmControlFraction());
+            }
+        }
     }
 }
