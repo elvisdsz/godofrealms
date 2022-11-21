@@ -8,12 +8,14 @@ public class BridgeController : MonoBehaviour
     private GateController gate;
     private TilemapRenderer tilemap;
     private BridgeController bridgeController;
+    private PlayerMovement player;
     // Start is called before the first frame update
     void Start()
     {
         tilemap = GetComponent<TilemapRenderer>();
         tilemap.enabled = false;
         bridgeController = GetComponent<BridgeController>();
+        player = GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame

@@ -12,6 +12,7 @@ public abstract class Typer : MonoBehaviour
     protected bool ignoreCircleCheck=false;
     private float timeSinceOverlap;
     private float timeToHideText = 1f;
+    private bool stopRefreshUI;
 
     public void Init(string word)
     {
@@ -41,7 +42,8 @@ public abstract class Typer : MonoBehaviour
             }
             CheckKeyPressed();
         }
-        RefreshUI();
+        if(!stopRefreshUI)
+            RefreshUI();
     }
 
     public void InCircle()
@@ -95,4 +97,13 @@ public abstract class Typer : MonoBehaviour
 
     public abstract void WordCompleted();
 
+    public IEnumerator ChangeWarningColor()
+    {
+        stopRefreshUI = true;
+        remainingWord = word;
+        wordTextUI.text = "<color=red>"+remainingWord+"</color>";
+        yield return new WaitForSeconds(1f);
+        wordTextUI.text = "<color=yellow>"+remainingWord+"</color>";
+        stopRefreshUI = false;
+    }
 }
