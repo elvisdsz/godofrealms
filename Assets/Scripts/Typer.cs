@@ -19,6 +19,8 @@ public abstract class Typer : MonoBehaviour
         remainingWord = word;
         timeSinceOverlap = 10f;
         inCircleFlag = false;
+        wordTextUI.outlineColor = Color.black;
+        wordTextUI.outlineWidth = 0.3f;
     }
 
     public void TyperUpdate()
@@ -76,7 +78,7 @@ public abstract class Typer : MonoBehaviour
 
     public void RefreshUI()
     {
-        wordTextUI.text = remainingWord;
+        wordTextUI.text = "<color=grey>"+word.Substring(0,word.Length-remainingWord.Length)+"</color><color=yellow>"+remainingWord+"</color>";
         wordTextUI.enabled = inCircleFlag;
     }
 
