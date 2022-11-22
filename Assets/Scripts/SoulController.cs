@@ -5,6 +5,7 @@ using TMPro;
 
 public class SoulController : Typer
 {
+    public static GameManagerScript _instance;
     private float timeSinceSpawn;
     [SerializeField] private RealmManager realm;
     private float wanderSpeed = 1.2f;
