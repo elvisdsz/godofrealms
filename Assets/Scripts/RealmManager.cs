@@ -16,7 +16,6 @@ public class RealmManager : MonoBehaviour
     public bool chaosWaveOn = false;
 
     public enum Realm{ TUTORIAL, FIRE, WATER, EARTH, METAL, FINAL, GATE }
-    //public enum PowerupType{ BUILD_BRIDGE, SPEED_UP, ATTRACT_SOUL, ETERNAL_RELEASE }
 
     public Realm currentRealm;
     public PowerupData.PowerupType currentPowerUpType;

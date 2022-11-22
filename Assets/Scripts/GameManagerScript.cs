@@ -143,7 +143,7 @@ public class GameManagerScript : MonoBehaviour
         if(!visitedRealms.Contains(realm))
         {
             visitedRealms.Add(realm);
-            HandleNewRealm(realm);
+            AddPowerBadge(realm);
         }
 
         gameIndicators.ShowRealmControlMeter(realm.realmColor, realm.GetReleasedSoulFraction());
@@ -219,7 +219,7 @@ public class GameManagerScript : MonoBehaviour
         return realmList;
     }
 
-    private void HandleNewRealm(RealmManager realm)
+    private void AddPowerBadge(RealmManager realm)
     {
         gameIndicators.AddNewRealmBadge(realm, realm.GetRealmControlFraction());
     }
@@ -239,6 +239,7 @@ public class GameManagerScript : MonoBehaviour
     public void OpenGoldGate()
     {
         goldGateNum += 1;
+        Subtitle._instance.ShowSubtitle("Golden gates opened "+goldGateNum+"/3", 3f);
         Debug.Log("open gold gate");
     }
 }
