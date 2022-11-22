@@ -49,6 +49,8 @@ public class RealmManager : MonoBehaviour
         
         if(!acquired)
             tilemap.color = Color.Lerp(Color.white, realmColor, GetRealmControlFraction());
+        else
+            tilemap.color = realmColor;
     }
 
     public float GetReleasedSoulFraction()
@@ -164,6 +166,7 @@ public class RealmManager : MonoBehaviour
 
         ChangeTileColor(tilemap, position, pattern1, this.realmColor);
         yield return new WaitForSeconds(0.15f);
+        AudioManager.instance.Play("SoulRelease");
         ChangeTileColor(tilemap, position, pattern1, Color.white);
         ChangeTileColor(tilemap, position, pattern2, this.realmColor);
         yield return new WaitForSeconds(0.2f);

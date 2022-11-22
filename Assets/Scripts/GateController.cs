@@ -39,20 +39,26 @@ public class GateController : Typer
                 {
                     bridgeController.EnableBridge();
                     gameManager.OpenGoldGate();
+                    AudioManager.instance.Play("OpenGoldenGate");
                 }
                 else
                 {
                     StartCoroutine(base.ChangeWarningColor());
                     Debug.Log("have to acquire realm to open gold gate");
+                    Subtitle._instance.ShowSubtitle("You have to acquire this realm to open golden gate.", 3f);
                 }
             }
             else
+            {
                 bridgeController.EnableBridge();
+                AudioManager.instance.Play("OpenGate");
+            }
         }
         else
         {
             StartCoroutine(base.ChangeWarningColor());
             Debug.Log("can't build bridge");
+            AudioManager.instance.Play("AccessDenied");
         }
     }
 }

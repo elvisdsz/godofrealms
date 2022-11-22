@@ -399,8 +399,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 50
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.14312923, g: 0.265867, b: 0.4056604, a: 1}
+  m_Sprite: {fileID: 21300000, guid: f2fa3723155c06e47a2fbac567b952fd, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -425,6 +425,10 @@ MonoBehaviour:
   wordTextUI: {fileID: 9141654047152665871}
   realm: {fileID: 0}
   tutorialSoul: 0
+  soulSpriteDown: {fileID: 21300000, guid: f2fa3723155c06e47a2fbac567b952fd, type: 3}
+  soulSpriteUp: {fileID: 21300000, guid: b854b43f0815c084080591926fadeb51, type: 3}
+  soulSpriteLeft: {fileID: 21300000, guid: ce43180582edc694496c77c87a9dcb68, type: 3}
+  spriteRenderer: {fileID: 7115248191425702783}
 --- !u!50 &7115248191425702778
 Rigidbody2D:
   serializedVersion: 4

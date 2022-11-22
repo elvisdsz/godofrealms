@@ -194,6 +194,7 @@ public class GameManagerScript : MonoBehaviour
     public void ChaosWaveEnded(RealmManager realm)
     {
         lastReleaseAverageTime = soulReleaseAverageTime;
+        Subtitle._instance.ShowSubtitle("Peace has been restored in the "+realm.currentRealm+" realm.", 3f);
     }
 
     private RealmManager ChooseRandomRealmForChaos()

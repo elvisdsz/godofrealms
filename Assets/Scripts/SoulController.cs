@@ -17,6 +17,11 @@ public class SoulController : Typer
 
     [SerializeField] private bool tutorialSoul;
 
+    public Sprite soulSpriteDown;
+    public Sprite soulSpriteUp;
+    public Sprite soulSpriteLeft;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -78,6 +83,24 @@ public class SoulController : Typer
         float velocityX = Random.Range(-1f, 1f);
         float velocityY = Random.Range(-1f, 1f);
         soulRigidbody.velocity = new Vector2(velocityX, velocityY).normalized * wanderSpeed;
+
+        if(Mathf.Abs(velocityX) > Mathf.Abs(velocityY))
+        {
+            spriteRenderer.sprite = soulSpriteLeft;
+            if(velocityX<=0)
+                spriteRenderer.flipX = false;
+            else
+                spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
+            if(velocityY<=0)
+                spriteRenderer.sprite = soulSpriteDown;
+            else
+                spriteRenderer.sprite = soulSpriteUp;
+        }
+
     }
 
     /*public void SetWord(string word)
