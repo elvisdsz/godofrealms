@@ -143,7 +143,8 @@ public class GameManagerScript : MonoBehaviour
         if(!visitedRealms.Contains(realm))
         {
             visitedRealms.Add(realm);
-            AddPowerBadge(realm);
+            if(!(realm.currentPowerUpType == PowerupData.PowerupType.NONE))
+                AddPowerBadge(realm);
         }
 
         gameIndicators.ShowRealmControlMeter(realm.realmColor, realm.GetReleasedSoulFraction());
