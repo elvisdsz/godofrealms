@@ -13,6 +13,11 @@ public class PlayerMovement : MonoBehaviour
 
     public PowerupData powerupData = new PowerupData();
 
+    public Sprite playerUpSprite;
+    public Sprite playerDownSprite;
+    public Sprite playerLeftSprite;
+    public SpriteRenderer spriteRenderer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +34,9 @@ public class PlayerMovement : MonoBehaviour
             x = Input.GetAxis("Horizontal");
             y = Input.GetAxis("Vertical");
         }
+
+        UpdatePlayerSprite(x, y);
+
         // Speed coef range from 1 to 2
         speedCoefficient = 1f + powerupData.PowerupValue(PowerupData.PowerupType.SPEED_UP);
 
@@ -39,6 +47,29 @@ public class PlayerMovement : MonoBehaviour
             Vector3 colliderPosition = transform.position + new Vector3(0,-transform.localScale.y,0);
             realm.Hit(colliderPosition);
         }*/
+    }
+
+    public void UpdatePlayerSprite(float x, float y)
+    {
+        if(x==0f && y==0f)
+            return;
+        
+        if(Mathf.Abs(x) > Mathf.Abs(y))
+        {
+            spriteRenderer.sprite = playerLeftSprite;
+            if(x<=0)
+                spriteRenderer.flipX = false;
+            else
+                spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
+            if(y<=0)
+                spriteRenderer.sprite = playerDownSprite;
+            else
+                spriteRenderer.sprite = playerUpSprite;
+        }
     }
 
     public void SetNewRealm(RealmManager realm) {

@@ -101,6 +101,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c52ce19c0327de41af8ac1019b9b72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 3
+  speedCoefficient: 0
+  playerUpSprite: {fileID: 282192474, guid: bb4fc42b28dd6ee44b7a55b9fe22c2d0, type: 3}
+  playerDownSprite: {fileID: -403360290, guid: bb4fc42b28dd6ee44b7a55b9fe22c2d0, type: 3}
+  playerLeftSprite: {fileID: -2017659804, guid: bb4fc42b28dd6ee44b7a55b9fe22c2d0, type: 3}
+  spriteRenderer: {fileID: 58021512179185649}
 --- !u!50 &58021512179185652
 Rigidbody2D:
   serializedVersion: 4
