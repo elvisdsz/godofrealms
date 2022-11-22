@@ -190,15 +190,16 @@ public class RealmManager : MonoBehaviour
         }
     }
 
-    public void TriggerChaosWave(float difficultyNormalized)
+    public bool TriggerChaosWave(float difficultyNormalized)
     {
         if(!chaosPossible || chaosWaveOn || soulList.Count!=0)
-            return;
+            return false;
         
         chaosWaveOn = true;
         maxSoulThisWave = (int)Mathf.Ceil(maxSoulCount * difficultyNormalized);
         maxSoulThisWave = maxSoulThisWave==0? 1: maxSoulThisWave;
         releasedSoulCount = 0;
+        return true;
     }
 
     private void EndChaosWave()

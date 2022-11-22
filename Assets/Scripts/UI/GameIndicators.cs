@@ -25,7 +25,7 @@ public class GameIndicators : MonoBehaviour
 		else
 		{
 			_instance = this;
-			DontDestroyOnLoad(gameObject);
+			//DontDestroyOnLoad(gameObject);
             HUDCanvas = GetComponent<Canvas>();
 		}
     }

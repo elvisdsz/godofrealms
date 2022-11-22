@@ -7,17 +7,17 @@ public class WordBank : MonoBehaviour
 {
     private static List<string> fireWords = new List<string>()
     {
-        "water", "AC", "aircon", "oxygen", "trees", "fan", "rain", "vegetation", "manual", "plant"
+        "water", "AC", "aircon", "oxygen", "trees", "fan", "rain"
     };
 
     private static List<string> waterWords = new List<string>()
     {
-        "buoyancy", "rain", "drizzle", "warmup", "float", "boat", "repair", "fix"
+        "buoyancy", "rain", "drizzle", "warmth", "float", "boat", "ship", "swim", "land", "island"
     };
 
     private static List<string> earthWords = new List<string>()
     {
-        "shelter", "build", "run", "go", "leave", "prepare", "strength", "tree", "veg", "aware"
+        "shelter", "build", "run", "go", "leave", "prepare", "strength", "tree", "roof"
     };
 
     private static List<string> metalWords = new List<string>()

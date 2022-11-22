@@ -22,6 +22,8 @@ public class GameManagerScript : MonoBehaviour
     private int goldGateNum = 0;
     private bool winGame = false;
 
+    private bool oneChaosDone = false;
+
     [SerializeField] private float chaosTriggerCountdownTimer=0f;
 
 
@@ -34,7 +36,7 @@ public class GameManagerScript : MonoBehaviour
 		else
 		{
 			_instance = this;
-			DontDestroyOnLoad(gameObject);
+			//DontDestroyOnLoad(gameObject);
 		}
     }
 
@@ -65,6 +67,7 @@ public class GameManagerScript : MonoBehaviour
     public void ResumeGame()
     {
         gameIndicators.ShowHUD();
+        mainUICanvas.HideAllPanels();
         Time.timeScale = 1f;
     }
 
@@ -78,6 +81,11 @@ public class GameManagerScript : MonoBehaviour
     {
         Time.timeScale = 1f;
         Application.Quit();
+    }
+
+    public void BuildBridgePowerLow()
+    {
+        mainUICanvas.ShowBridgeFailPanel();
     }
 
     // Update is called once per frame
@@ -156,6 +164,7 @@ public class GameManagerScript : MonoBehaviour
         {
             winGame = true;
             Debug.Log("WIN "+winGame);
+            mainUICanvas.ShowWinScreenPanel();
         }
     }
 
@@ -170,36 +179,44 @@ public class GameManagerScript : MonoBehaviour
         // choose a random acquired non-chaotic realm
         RealmManager realm = ChooseRandomRealmForChaos();
         
-        TriggerChaos(realm, (soulReleaseAverageTime/lastReleaseAverageTime)/2);
+        bool chaosTriggered = TriggerChaos(realm, (soulReleaseAverageTime/lastReleaseAverageTime)/2);
+
+        if(realm!=null && chaosTriggered && !oneChaosDone)
+        {
+            oneChaosDone = true;
+            AudioManager.instance.Play("DramaticReveal");
+            mainUICanvas.ShowFirstChaosPanel(realm);
+            Time.timeScale = 0f;
+        }
     }
 
-    private void TriggerChaos(RealmManager realm, float difficultyNormalized)
+    private bool TriggerChaos(RealmManager realm, float difficultyNormalized)
     {
         if(realm == null)
         {
             if(player.GetRealm() != null)
                 chaosTriggerCountdownTimer = player.GetRealm().GetSoulCount() * soulReleaseAverageTime;
             chaosTriggerCountdownTimer = chaosTriggerCountdownTimer<=1f? 5f: chaosTriggerCountdownTimer;
-            return;
+            return false;
         }
 
         Debug.Log("Attempting to trigger chaos in realm "+realm.name+" with normalized difficulty ="+difficultyNormalized);
 
-        // trigger chaos in chosen realm
-        realm.TriggerChaosWave(difficultyNormalized);
-
         // reset countdown timer with new soul count and player perf
         chaosTriggerCountdownTimer = realm.maxSoulThisWave * soulReleaseAverageTime;
+
+        // trigger chaos in chosen realm
+        return realm.TriggerChaosWave(difficultyNormalized);
     }
 
     public void ChaosWaveEnded(RealmManager realm)
     {
         lastReleaseAverageTime = soulReleaseAverageTime;
-        if(realm.currentPowerUpType == PowerupData.PowerupType.FIRE)
+        if(realm.currentPowerUpType == PowerupData.PowerupType.SPEED_UP)
             Subtitle._instance.ShowSubtitle("Fire realm acquired. Now you have the ability to move faster.", 3f);
-        else if(realm.currentPowerUpType == PowerupData.PowerupType.EARTH)
+        else if(realm.currentPowerUpType == PowerupData.PowerupType.BUILD_BRIDGE)
             Subtitle._instance.ShowSubtitle("Earth realm acquired. Now you have the ability to build bridges.", 3f);
-        else if(realm.currentPowerUpType == PowerupData.PowerupType.METAL)
+        else if(realm.currentPowerUpType == PowerupData.PowerupType.ATTRACT_SOUL)
             Subtitle._instance.ShowSubtitle("Metal realm acquired. Now you have the ability to attract souls to you.", 3f);
         else
             Subtitle._instance.ShowSubtitle("Peace has been restored in the "+realm.currentRealm+" realm.", 3f);

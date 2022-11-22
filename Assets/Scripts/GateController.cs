@@ -59,6 +59,8 @@ public class GateController : Typer
             StartCoroutine(base.ChangeWarningColor());
             Debug.Log("can't build bridge");
             AudioManager.instance.Play("AccessDenied");
+            if(!IsTutorial && player.powerupData.PowerupValue(PowerupData.PowerupType.BUILD_BRIDGE) < 0.5f)
+                gameManager.BuildBridgePowerLow();
         }
     }
 }
