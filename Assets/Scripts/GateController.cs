@@ -44,7 +44,7 @@ public class GateController : Typer
                 else
                 {
                     StartCoroutine(base.ChangeWarningColor());
-                    Debug.Log("have to acquire realm to open gold gate");
+                    Debug.Log("have to acquire realm to open golden gate");
                     Subtitle._instance.ShowSubtitle("You have to acquire this realm to open golden gate.", 3f);
                 }
             }

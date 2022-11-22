@@ -29,6 +29,7 @@ public class SoulController : Typer
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
 
         if(tutorialSoul) {
+            Subtitle._instance.ShowSubtitle("Type RELEASE", 3f);
             base.Init("RELEASE");
         }
     }

@@ -195,7 +195,14 @@ public class GameManagerScript : MonoBehaviour
     public void ChaosWaveEnded(RealmManager realm)
     {
         lastReleaseAverageTime = soulReleaseAverageTime;
-        Subtitle._instance.ShowSubtitle("Peace has been restored in the "+realm.currentRealm+" realm.", 3f);
+        if(realm.currentPowerUpType == PowerupData.PowerupType.FIRE)
+            Subtitle._instance.ShowSubtitle("Fire realm acquired. Now you have the ability to move faster.", 3f);
+        else if(realm.currentPowerUpType == PowerupData.PowerupType.EARTH)
+            Subtitle._instance.ShowSubtitle("Earth realm acquired. Now you have the ability to build bridges.", 3f);
+        else if(realm.currentPowerUpType == PowerupData.PowerupType.METAL)
+            Subtitle._instance.ShowSubtitle("Metal realm acquired. Now you have the ability to attract souls to you.", 3f);
+        else
+            Subtitle._instance.ShowSubtitle("Peace has been restored in the "+realm.currentRealm+" realm.", 3f);
     }
 
     private RealmManager ChooseRandomRealmForChaos()
