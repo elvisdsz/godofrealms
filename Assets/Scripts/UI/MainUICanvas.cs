@@ -94,7 +94,8 @@ public class MainUICanvas : MonoBehaviour
     {
         HideAllPanels();
         firstChaosText.text = "There is some chaos in the "+realm.currentRealm.ToString()+" realm. Some wandering souls are back. If you lose control of the realm, it might affect your ability to "+realm.currentPowerUpType.ToString();
-        firstChaosPanel.SetActive(true);
+        if(realm.currentPowerUpType != PowerupData.PowerupType.NONE)
+            firstChaosPanel.SetActive(true);
     }
 
     public void ShowWinScreenPanel()
