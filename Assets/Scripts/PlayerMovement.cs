@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private RealmManager realm;
 
     private Rigidbody2D playerRigidbody;
-    public float speed = 3f;
+    public float speed;
     public float speedCoefficient;
 
     public PowerupData powerupData = new PowerupData();
@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
         // Speed coef range from 1 to 2
         speedCoefficient = 1f + powerupData.PowerupValue(PowerupData.PowerupType.SPEED_UP);
 
-        playerRigidbody.AddForce(new Vector2(x,y) * speed * speedCoefficient);
+        playerRigidbody.AddForce(new Vector2(x,y) * speed * speedCoefficient * Time.deltaTime);
 
         /*if(realm!=null && Input.GetKeyDown(KeyCode.Space))
         {

@@ -31,7 +31,7 @@ public class GateController : Typer
     {
         bridgeController = GetComponentInParent<BridgeController>();
         // Player has build-bridge powerup or tutorial realm is acquired
-        if(player.powerupData.PowerupValue(PowerupData.PowerupType.BUILD_BRIDGE) >= 0.5f || (IsTutorial && player.GetRealm().acquired))
+        if(player.powerupData.PowerupValue(PowerupData.PowerupType.BUILD_BRIDGE) >= 0.35f || (IsTutorial && player.GetRealm().acquired))
         {
             if(IsGoldGate)
             {
@@ -59,7 +59,7 @@ public class GateController : Typer
             StartCoroutine(base.ChangeWarningColor());
             Debug.Log("can't build bridge");
             AudioManager.instance.Play("AccessDenied");
-            if(!IsTutorial && player.powerupData.PowerupValue(PowerupData.PowerupType.BUILD_BRIDGE) < 0.5f)
+            if(!IsTutorial && player.powerupData.PowerupValue(PowerupData.PowerupType.BUILD_BRIDGE) < 0.35f)
                 gameManager.BuildBridgePowerLow();
         }
     }
